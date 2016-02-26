@@ -1,0 +1,59 @@
+#!/bin/sh /etc/rc.common
+# k 2016 piratas.cu.cc
+# 4g  avantel script inicio uqmi mf821 
+ 
+START=70
+STOP=90
+USE_PROCD=1
+EXTRA_COMMANDS="status restart"
+
+start_service() {        
+        echo start
+        # commands to launch application
+	ifdown wan
+	sleep 1
+	ifup wan
+	sleep 1
+	uqmi -d /dev/cdc-wdm0 --stop-network 0xffffffff --autoconnect
+	sleep 1
+	uqmi -d /dev/cdc-wdm0 --start-network lte.avantel.com.co --autoconnect
+	sleep 1
+	uqmi -d /dev/cdc-wdm0 --get-data-status
+	sleep 1
+	uqmi -d /dev/cdc-wdm0 --get-signal-info	
+	
+}   
+start() {        
+        echo start
+        # commands to launch application
+	ifdown wan
+	sleep 1
+	ifup wan
+	sleep 1
+	uqmi -d /dev/cdc-wdm0 --stop-network 0xffffffff --autoconnect
+	sleep 1
+	uqmi -d /dev/cdc-wdm0 --start-network lte.avantel.com.co --autoconnect
+	sleep 1
+	uqmi -d /dev/cdc-wdm0 --get-data-status
+	sleep 1
+	uqmi -d /dev/cdc-wdm0 --get-signal-info	
+	
+}              
+ 
+stop() {          
+        echo stop
+        # commands to kill application 
+	
+	uqmi -d /dev/cdc-wdm0 --stop-network 0xffffffff --autoconnect
+	#uqmi -d /dev/cdc-wdm0 --get-data-status
+	#uqmi -d /dev/cdc-wdm0 --get-signal-info
+
+}
+
+status(){          
+        echo estado
+        # commands to kill application 
+	uqmi -d /dev/cdc-wdm0 --get-data-status
+	sleep 1
+	uqmi -d /dev/cdc-wdm0 --get-signal-info	
+}
